@@ -48,7 +48,7 @@ import { app,server } from "./socket/socket.js";
 
 
 const corsOption = {
-    origin:"https://baateiyn.vercel.app/",
+    origin:"https://bateyien.pages.dev/",
     credentials:true
 }
 app.use(cors(corsOption));
