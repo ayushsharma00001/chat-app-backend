@@ -51,7 +51,7 @@ export const login = async (req, res, next) => {
 
         const tokenData = { userId: user._id };
         const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
-
+        localStorage.setItem("token",token);
         return res.status(201).cookie("token", token, {
     maxAge: 1 * 24 * 60 * 60 * 1000,
     httpOnly: true,
