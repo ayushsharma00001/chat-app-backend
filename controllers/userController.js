@@ -52,8 +52,19 @@ export const login = async (req, res, next) => {
         const tokenData = { userId: user._id };
         const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 
-        res.cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' });
-        return res.status(201).json({ success: true, message: 'User Logged in', _id: user._id, userName: user.userName, fullName: user.fullName, profilePhoto: user.profilePhoto });
+        return res.status(201).cookie("token", token, {
+    maxAge: 1 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    secure: true, // Ensure this is true for HTTPS
+    sameSite: 'None' // Required for cross-site cookies
+}).json({
+    success: true,
+    message: 'User Logged in',
+    _id: user._id,
+    userName: user.userName,
+    fullName: user.fullName,
+    profilePhoto: user.profilePhoto
+});
 
     } catch (err) {
         console.error(err);
