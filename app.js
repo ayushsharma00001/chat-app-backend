@@ -49,7 +49,8 @@ import { app,server } from "./socket/socket.js";
 
 const corsOption = {
     origin:"https://bateyien.pages.dev/",
-    credentials:true
+    credentials:true,
+    optionsSuccessStatus: 200
 }
 app.use(cors(corsOption));
 // requiring routes
