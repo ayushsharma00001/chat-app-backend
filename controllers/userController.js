@@ -56,7 +56,6 @@ export const login = async (req, res, next) => {
     maxAge: 1 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: true, // Ensure this is true for HTTPS
-    sameSite: 'None' // Required for cross-site cookies
 }).json({
     success: true,
     message: 'User Logged in',
