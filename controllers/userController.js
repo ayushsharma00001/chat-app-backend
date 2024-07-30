@@ -34,38 +34,33 @@ export const register = async (req,res,next)=>{
 };
 
 
-export const login = async(req,res,next)=>{
-    try{
-        const {userName,password} = req.body;
-        if(!userName || !password){
-            return res.status(400).json({message:"All fields are required..."});
-        };
-        const user = await User.findOne({userName});
-        if(!user){
-            return res.status(400).json({message:"Incorrect username or password"});
-        };
-        const isPasswordMathched = await bcrypt.compare(password,user.password);
-        if(!isPasswordMathched){
-            return res.status(400).json({message:"Incorrect username or password"});
-        };
+export const login = async (req, res, next) => {
+    try {
+        const { userName, password } = req.body;
+        if (!userName || !password) {
+            return res.status(400).json({ message: "All fields are required..." });
+        }
+        const user = await User.findOne({ userName });
+        if (!user) {
+            return res.status(400).json({ message: "Incorrect username or password" });
+        }
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatched) {
+            return res.status(400).json({ message: "Incorrect username or password" });
+        }
 
-        const tokenData = {
-            userId:user._id
-        };
-        const token = await jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{expiresIn:'1d'});
+        const tokenData = { userId: user._id };
+        const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 
-        return res.status(201).cookie("token",token,{maxAge:1*24*60*60*1000,httpOnly:true}).json({success: true, message: 'User Logged in',
-            _id:user._id,
-            userName:user.userName,
-            fullName:user.fullName,
-            profilePhoto:user.profilePhoto
-        });
+        res.cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' });
+        return res.status(201).json({ success: true, message: 'User Logged in', _id: user._id, userName: user.userName, fullName: user.fullName, profilePhoto: user.profilePhoto });
 
-    }catch(err){
-        console.log(err);
-        // next(err);
-    };
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
 };
+
 
 
 export const logout = (req,res,next)=>{
