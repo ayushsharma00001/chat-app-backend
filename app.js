@@ -48,7 +48,7 @@ import { app,server } from "./socket/socket.js";
 
 
 const corsOption = {
-    origin:"https://bateyien.pages.dev/",
+    origin:"https://bateyien.pages.dev",
     credentials:true,
     optionsSuccessStatus: 200
 }
